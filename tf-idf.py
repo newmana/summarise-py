@@ -23,7 +23,6 @@ def summarize(text):
     # Remove stopwords and lemmatize
     filtered_tokens = []
     for token in word_tokens:
-        print(f'[{token}]')
         if token not in stop_words:
             filtered_token = lemmatizer.lemmatize(token)
             filtered_tokens.append(filtered_token)
@@ -61,7 +60,7 @@ text = text.replace('\n','')
 
 # Summarize
 summary = summarize(text)
-print(summary)
+print(f'Summary: {summary}')
 
 # Save to database
 path = 'db/tfidf-summaries.db'
@@ -77,4 +76,4 @@ df.to_sql('summaries', con=engine, if_exists='append', index=False)
 # Retrieve summary
 with engine.connect() as conn:
     df = pd.read_sql_table('summaries', con=conn)
-    print(df['summary'].values[0])
+    print(f'Retrieved summary: {df["summary"].values[0]}')

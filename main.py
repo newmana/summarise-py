@@ -34,16 +34,14 @@ db = SQLiteVSS.from_texts(
     db_file=db_path,
 )
 
-# query it
-query = "What did the president say about Ketanji Brown Jackson"
-data = db.similarity_search(query)
 
-# print results
-print(data[0].page_content)
+def query(question):
+    # query it
+    data = db.similarity_search(question)
 
-# query it
-query = "Who does he bless?"
-data = db.similarity_search(query)
+    # print results
+    print(f'{question}\n{data[0].page_content}')
 
-# print results
-print(data[0].page_content)
+
+query("What did the president say about Ketanji Brown Jackson?")
+query("Who does he bless?")
