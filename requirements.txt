@@ -1,0 +1,6 @@
+langchain~=0.0.340
+nltk~=3.8.1
+numpy~=1.26.2
+pandas~=2.1.4
+scikit-learn~=1.2.2
+sqlalchemy~=2.0.21
