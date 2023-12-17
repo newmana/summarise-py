@@ -14,7 +14,7 @@ import re
 
 # Function to summarize text
 def summarize(text):
-    stop_words = set(stopwords.words("english"))
+    stop_words = set(stopwords.words("english")).union(set['get'])
     text = text.lower()
     text = text.strip()
     text = re.sub(r'[^\w\s]+', '', text)
@@ -68,9 +68,7 @@ hypernym_chains = {}
 
 for word in summary.split(' '):
     # Get the Synset for the word
-    print(word)
     ss = wn.synsets(word)[0]
-    print(ss)
     chain = [ss]
     while ss.hypernyms():
         ss = ss.hypernyms()[0]
