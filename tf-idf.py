@@ -8,6 +8,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pickle
 from sqlalchemy import create_engine
 import pandas as pd
+from nltk.corpus import wordnet as wn
 import os
 import re
 
@@ -62,6 +63,24 @@ text = text.replace('\n','')
 summary = summarize(text)
 print(f'Summary: {summary}')
 
+# Print out hypernyms
+hypernym_chains = {}
+
+for word in summary.split(' '):
+    # Get the Synset for the word
+    print(word)
+    ss = wn.synsets(word)[0]
+    print(ss)
+    chain = [ss]
+    while ss.hypernyms():
+        ss = ss.hypernyms()[0]
+        chain.append(ss)
+    hypernym_chains[word] = [s.name().split(".")[0] for s in chain]
+
+# Print the hypernym chains
+for word, chain in hypernym_chains.items():
+    print(f"{word}: {' -> '.join(chain)}")
+
 # Save to database
 path = 'db/tfidf-summaries.db'
 scriptdir = os.path.dirname(__file__)
@@ -77,3 +96,4 @@ df.to_sql('summaries', con=engine, if_exists='append', index=False)
 with engine.connect() as conn:
     df = pd.read_sql_table('summaries', con=conn)
     print(f'Retrieved summary: {df["summary"].values[0]}')
+
